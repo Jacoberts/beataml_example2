@@ -86,9 +86,12 @@ class InputManager(object):
     return row.to_numpy()
 
 
-  def getAucFeatures(self, lab_id):
+  def getAucFeatures(self, lab_id, inhibitors):
     """Returns ndarray of response to inhibitors, with NaNs."""
-    return self.aucs.loc[lab_id].to_numpy()
+    row = self.aucs.loc[lab_id]
+    out = pandas.Series(numpy.nan, index=inhibitors)
+    out[row.index] = row
+    return out.to_numpy()
     
 
   def getClinicalCategoricalFeatures(self, lab_id, one_hot=False):
